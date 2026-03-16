@@ -406,7 +406,7 @@ class Message extends Base {
                 async (m) => await this.client.getContactById(
                     typeof m === 'string' 
                     ? m 
-                    : m._serialized
+                    : m._serialized;
                 ),
         );
     }
