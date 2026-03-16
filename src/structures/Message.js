@@ -407,8 +407,8 @@ class Message extends Base {
                     typeof m === 'string'
                     ? m
                     : m._serialized
-                )
-            )
+                ),
+            ),
         );
     }
 
