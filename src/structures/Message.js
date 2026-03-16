@@ -404,9 +404,9 @@ class Message extends Base {
         return await Promise.all(
             this.mentionedIds.map(
                 async (m) => await this.client.getContactById(
-                    typeof m === 'string' 
-                        ? m 
-                        : m._serialized
+                    typeof m === 'string'
+                    ? m
+                    : m._serialized
                 )
             )
         );
