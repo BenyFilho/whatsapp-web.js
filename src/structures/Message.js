@@ -405,7 +405,7 @@ class Message extends Base {
             this.mentionedIds.map(
                 async (m) =>
                     await this.client.getContactById(
-                        typeof m === 'string' ? m : m._serialized
+                        typeof m === 'string' ? m : m._serialized,
                     ),
             ),
         );
