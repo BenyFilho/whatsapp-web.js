@@ -1081,24 +1081,14 @@ exports.LoadUtils = () => {
             .require('WAWebCollections')
             .Contact.getModelsArray();
         return Promise.all(
-            contacts.map((contact) => {
+            contacts.map(async (contact) => {
                 if (contact.isBusiness || contact.isEnterprise) {
-                    const contactWid = window
-                        .require('WAWebWidFactory')
-                        .createWid(contact.id);
-
-                    return window
+                    await window
                         .require('WAWebCollections')
-                        .BusinessProfile.find(contactWid)
-                        .then((bizProfile) => {
-                            if (bizProfile?.profileOptions) {
-                                contact.businessProfile = bizProfile;
-                            }
-                            return window.WWebJS.getContactModel(contact);
-                        });
+                        .BusinessProfile.find(contact.id)
+                        .catch(() => {});
                 }
-
-                return Promise.resolve(window.WWebJS.getContactModel(contact));
+                return window.WWebJS.getContactModel(contact);
             }),
         );
     };
