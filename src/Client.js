@@ -1020,8 +1020,7 @@ class Client extends EventEmitter {
         );
 
         await this.pupPage.evaluate(() => {
-            const { Msg, Chat } =
-                window.require('WAWebCollections');
+            const { Msg, Chat } = window.require('WAWebCollections');
             const AppState = window.require('WAWebSocketModel').Socket;
 
             // Enable placeholder message resend (recovery for ciphertext messages)
