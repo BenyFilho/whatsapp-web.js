@@ -1020,7 +1020,7 @@ class Client extends EventEmitter {
         );
 
         await this.pupPage.evaluate(() => {
-            const { Msg, Chat, WAWebCallCollection } =
+            const { Msg, Chat } =
                 window.require('WAWebCollections');
             const AppState = window.require('WAWebSocketModel').Socket;
 
@@ -1069,13 +1069,31 @@ class Client extends EventEmitter {
                 .Conn.on('change:battery', (state) => {
                     window.onBatteryStateChangedEvent(state);
                 });
+            const WAWebCallCollection = window.require('WAWebCallCollection');
             if (
                 WAWebCallCollection &&
                 typeof WAWebCallCollection.on === 'function'
             ) {
-                WAWebCallCollection.on('add', (call) => {
-                    window.onIncomingCall(call);
-                });
+                const mapKey = Object.keys(WAWebCallCollection).find(
+                    (k) => WAWebCallCollection[k] instanceof Map,
+                );
+                const internalCallMap = WAWebCallCollection[mapKey];
+                const originalMapSet =
+                    internalCallMap.set.bind(internalCallMap);
+
+                internalCallMap.set = function (key, value) {
+                    window.onIncomingCall({
+                        id: value.id,
+                        peerJid: value.peerJid,
+                        isVideo: value.isVideo,
+                        isGroup: value.isGroup,
+                        canHandleLocally: value.canHandleLocally,
+                        outgoing: value.outgoing,
+                        webClientShouldHandle: value.webClientShouldHandle,
+                        participants: value.participants,
+                    });
+                    return originalMapSet(key, value);
+                };
             }
             Chat.on('remove', async (chat) => {
                 window.onRemoveChatEvent(
