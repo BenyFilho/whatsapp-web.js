@@ -1026,11 +1026,7 @@ exports.LoadUtils = () => {
         if (!res.isBlocked) {
             const alt = window
                 .require('WAWebApiContact')
-                .getAlternateUserWid(
-                    window
-                        .require('WAWebWidFactory')
-                        .asUserWidOrThrow(contact.id),
-                );
+                .getAlternateUserWid(wid);
             if (alt) {
                 res.isBlocked = !!window
                     .require('WAWebCollections')
