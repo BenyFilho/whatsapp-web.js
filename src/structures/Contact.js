@@ -200,7 +200,7 @@ class Contact extends Base {
             }
             await window
                 .require('WAWebBlockContactAction')
-                .unblockContact(contact, 'ChatListBlock')
+                .unblockContact(contact, 'ChatListBlock');
         }, this.id._serialized);
 
         this.isBlocked = false;
